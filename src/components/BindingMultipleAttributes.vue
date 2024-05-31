@@ -13,13 +13,15 @@ const objectOfAttributes = reactive({
   <input v-bind="objectOfAttributes" />
   <!-- RENDER:  -->
   <!-- <input class="text-red" id="unique-id">  -->
-  
+
+  <br>
   
   <!-- SAME THAT -->
   <input :value="objectOfAttributes.value" :class="objectOfAttributes.class" :id="objectOfAttributes.id" />
   <!-- RENDER:  -->
   <!-- <input class="text-red" id="unique-id">  -->
-  
+
+  <br>
   
   <!-- SAME THAT -->
   <input v-bind:value="objectOfAttributes.value" v-bind:class="objectOfAttributes.class" v-bind:id="objectOfAttributes.id" />
