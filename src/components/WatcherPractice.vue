@@ -1,17 +1,15 @@
 <script setup>
-import { ref, watch } from 'vue'
-
-const firstName = ref('Julian')
-
-const x = ref(1)
-const y = ref(2)
+import { reactive, ref, watch } from 'vue'
 
 // Watch single ref
+const firstName = ref('Julian')
 watch(firstName, (newVal, oldVal) => {
   console.log(`New first name: ${newVal}, old first name: ${oldVal}`)
 })
 
 // Watch getter
+const x = ref(1)
+const y = ref(2)
 watch(
   () => x.value + y.value,
   (newSum, oldSum) => {
@@ -24,20 +22,59 @@ watch([x, () => y.value], ([newValueX, newValueY], [oldValueX, oldValueY]) => {
   console.log(`(Using array) New value of X: ${newValueX}, old value of X: ${oldValueX}`)
   console.log(`(Using array) New value of Y: ${newValueY}, old value of X: ${oldValueY}`)
 })
-</script>
+
+// Watch a reactive object
+const person = reactive({
+  firstName: 'Julian',
+  lastName: 'Schmidt'
+})
+
+// This will NOT work. It both (newPerson, oldPerson) will be the same object.
+// watch(person, (newPerson, oldPerson) => {
+//   console.log(`New person: ${JSON.stringify(newPerson)}\nOld person: ${JSON.stringify(oldPerson)}`)
+// })
+
+// This will work, reactive internally convert the object properties into refs.
+watch(
+  () => person.firstName, // person.firstName = ref
+  (newPersonFirstName, oldPersonFirstName) => {
+    console.log(
+      `New person.firstName: ${JSON.stringify(newPersonFirstName)}\nOld person.firstName: ${JSON.stringify(oldPersonFirstName)}`
+    )
+  }
+)
+
+// Execute immediately the callback, and watch for changes
+const source = ref(1)
+watch(
+  source,
+  () => {
+    // executed immediately, then again when `source` changes
+    console.log('It prints immediately, then again when `source` changes')
+  },
+  { immediate: true }
+)</script>
 
 <template>
-  <input type="text" v-model="firstName" />
+  <label for="firstName">First name: </label>
+  <input id="firstName" type="text" v-model="firstName" />
 
   <br />
+  <br />
 
-  <label for="x"></label>
+  <label for="x">X: </label>
   <input id="x" type="number" v-model="x" />
 
   <br />
 
-  <label for="y"></label>
+  <label for="y">Y: </label>
   <input id="y" type="number" v-model="y" />
+
+  <br />
+  <br />
+
+  <label for="person">Person First Name: </label>
+  <input id="person" type="text" v-model="person.firstName" />
 </template>
 
 <style scoped></style>
