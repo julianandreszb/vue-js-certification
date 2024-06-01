@@ -2,11 +2,12 @@
 // import DynamicArguments from '@/components/DynamicArguments.vue'
 // import BindingMultipleAttributes from '@/components/BindingMultipleAttributes.vue'
 // import AccessingEventArgumentInInlineHandlers from '@/components/AccessingEventArgumentInInlineHandlers.vue'
-import FormBindings from '@/components/FormBindings.vue'
+//import FormBindings from '@/components/FormBindings.vue'
+import Watcher from '@/components/WatcherPractice.vue'
 </script>
 
 <template>
-  <FormBindings />
+  <Watcher />
 </template>
 
 <style scoped></style>

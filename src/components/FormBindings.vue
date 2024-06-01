@@ -3,6 +3,12 @@ import { ref } from 'vue'
 
 const firstName = ref('')
 const lastName = ref('')
+
+const countrySelected = ref('co')
+const countryOptions = ref([
+  { text: 'Colombia', value: 'co' },
+  { text: 'Argentina', value: 'ar' }
+])
 </script>
 
 <template>
@@ -23,6 +29,17 @@ const lastName = ref('')
         id="lastName"
       />
       <p>{{ lastName }}</p>
+    </div>
+
+    <div>
+      <label for="country"></label>
+      <select name="country" id="country">
+        <option value="" disabled>Select one option</option>
+        <option v-for="country in countryOptions" :value="country.value" :key="country.value">
+          {{ country.text }}
+        </option>
+      </select>
+      <p>Country selected: {{ countrySelected }}</p>
     </div>
   </form>
 </template>
