@@ -29,7 +29,7 @@ const person = reactive({
   lastName: 'Schmidt'
 })
 
-// This will NOT work. It both (newPerson, oldPerson) will be the same object.
+// This will NOT work. Both (newPerson, oldPerson) will be the same object because they both point to the same object!
 // watch(person, (newPerson, oldPerson) => {
 //   console.log(`New person: ${JSON.stringify(newPerson)}\nOld person: ${JSON.stringify(oldPerson)}`)
 // })
