@@ -43,17 +43,7 @@ watch(
     )
   }
 )
-
-// Execute immediately the callback, and watch for changes
-const source = ref(1)
-watch(
-  source,
-  () => {
-    // executed immediately, then again when `source` changes
-    console.log('It prints immediately, then again when `source` changes')
-  },
-  { immediate: true }
-)</script>
+</script>
 
 <template>
   <label for="firstName">First name: </label>
