@@ -16,6 +16,11 @@ const currentComponent = ref('ComponentA')
     Show {{ comp }}
   </button>
   <component :is="components[currentComponent]" />
+
+  <!-- KeepAlive: Inactive components will be cached (Keep state)! -->
+  <KeepAlive>
+    <component :is="components[currentComponent]" />
+  </KeepAlive>
 </template>
 
 <style scoped></style>
