@@ -8,11 +8,13 @@
 // import AccessingTheRefs from '@/components/TemplateRefs/AccessingTheRefs.vue'
 // import RefsInsideFor from '@/components/TemplateRefs/RefsInsideFor.vue'
 // import RefAccessChildProp from '@/components/TemplateRefs/RefAccessChildProp.vue'
-import ParentListening from '@/components/Component/Emit/ParentListening.vue'
+// import ParentListening from '@/components/Component/Emit/ParentListening.vue'
+// import SlotComponentContainer from '@/components/Component/Slot/SlotComponentContainer.vue'
+import ComponentsContainer from '@/components/Component/DynamicComponents/ComponentsContainer.vue'
 </script>
 
 <template>
-  <ParentListening />
+  <ComponentsContainer />
 </template>
 
 <style scoped></style>
