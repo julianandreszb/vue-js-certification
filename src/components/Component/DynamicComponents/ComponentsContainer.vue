@@ -18,6 +18,7 @@ const currentComponent = ref('ComponentA')
   <component :is="components[currentComponent]" />
 
   <!-- KeepAlive: Inactive components will be cached (Keep state)! -->
+  <!-- onActivated and onDeactivated are only called when KeepAlive wraps the component tag -->
   <KeepAlive>
     <component :is="components[currentComponent]" />
   </KeepAlive>

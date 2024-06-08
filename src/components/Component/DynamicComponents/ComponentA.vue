@@ -1,4 +1,14 @@
-<script setup></script>
+<script setup>
+import { onActivated, onDeactivated } from 'vue'
+
+onActivated(() => {
+  console.log('Component A is activated')
+})
+
+onDeactivated(() => {
+  console.log('Component A is deactivated')
+})
+</script>
 
 <template>
   <div>
