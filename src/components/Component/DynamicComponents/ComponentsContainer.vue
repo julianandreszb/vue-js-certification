@@ -13,12 +13,15 @@ const currentComponent = ref('ComponentA')
 
 <template>
   <button v-for="(_, comp) in components" :key="comp" @click="currentComponent = comp">
-    Show {{ comp }}
+    Show {{ comp }} - {{ _ }}
   </button>
   <component :is="components[currentComponent]" />
 
+  <hr />
+
   <!-- KeepAlive: Inactive components will be cached (Keep state)! -->
   <!-- onActivated and onDeactivated are only called when KeepAlive wraps the component tag -->
+  <span>Using KeepAlive (It keeps the state):</span>
   <KeepAlive>
     <component :is="components[currentComponent]" />
   </KeepAlive>

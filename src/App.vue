@@ -10,11 +10,12 @@
 // import RefAccessChildProp from '@/components/TemplateRefs/RefAccessChildProp.vue'
 // import ParentListening from '@/components/Component/Emit/ParentListening.vue'
 // import SlotComponentContainer from '@/components/Component/Slot/SlotComponentContainer.vue'
-import ComponentsContainer from '@/components/Component/DynamicComponents/ComponentsContainer.vue'
+// import ComponentsContainer from '@/components/Component/DynamicComponents/ComponentsContainer.vue'
+import DefineAsyncComponent from '@/components/Component/AsyncComp/DefineAsyncComponent.vue'
 </script>
 
 <template>
-  <ComponentsContainer />
+  <DefineAsyncComponent />
 </template>
 
 <style scoped></style>
