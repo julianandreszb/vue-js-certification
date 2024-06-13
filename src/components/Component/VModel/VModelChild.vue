@@ -12,9 +12,8 @@ function increment() {
   <button @click="increment">Increase Counter</button>
   <p>Counter on child {{ counter }}</p>
 
-  <hr>
-  <label for="firstNameInput">First Name</label>
-  <input id="firstNameInput" type="text" v-model="firstName" >
+  <p>First Name on child {{ firstName }}</p>
+  <input type="text" v-model="firstName" />
 </template>
 
 <style scoped></style>
