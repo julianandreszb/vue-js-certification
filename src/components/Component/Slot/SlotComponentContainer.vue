@@ -2,6 +2,7 @@
 import SlotChild from '@/components/Component/Slot/SlotChild.vue'
 import SlotChildDefaultValue from '@/components/Component/Slot/SlotChildDefaultValue.vue'
 import SlotChildNamedSlots from '@/components/Component/Slot/SlotChildNamedSlots.vue'
+import SlotConditionalSlots from '@/components/Component/Slot/SlotConditionalSlots.vue'
 </script>
 
 <template>
@@ -20,9 +21,37 @@ import SlotChildNamedSlots from '@/components/Component/Slot/SlotChildNamedSlots
   
   <p>Named slots:</p>
   <SlotChildNamedSlots>
-    <template v-slot:title><h1>This is the title slot</h1></template>
-    <template v-slot:body><p>This is the content slot</p></template>
+    <template v-slot:title><h1>This is the title slot. Using v-slot:title</h1></template>
+    <template #body><p>This is the content slot. Using #body</p></template>
   </SlotChildNamedSlots>
+  
+  <hr>
+  <p>Conditional Slots</p>
+  <SlotConditionalSlots/>
+  <SlotConditionalSlots>
+    <template v-slot:header>
+      Header (Just header slot was provided)
+    </template>
+  </SlotConditionalSlots>
+  <SlotConditionalSlots>
+    <template v-slot:header>
+      Header (Just header and body slot were provided)
+    </template>
+    <template v-slot:body>
+      This is the body
+    </template>
+  </SlotConditionalSlots>
+  <SlotConditionalSlots>
+    <template v-slot:header>
+      Header (All slots were provided (header, body and footer))
+    </template>
+    <template v-slot:body>
+      This is the body
+    </template>
+    <template v-slot:footer>
+      This is the footer
+    </template>
+  </SlotConditionalSlots>
 </template>
 
 <style scoped></style>
