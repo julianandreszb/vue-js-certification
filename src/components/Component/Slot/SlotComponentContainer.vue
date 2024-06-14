@@ -3,6 +3,12 @@ import SlotChild from '@/components/Component/Slot/SlotChild.vue'
 import SlotChildDefaultValue from '@/components/Component/Slot/SlotChildDefaultValue.vue'
 import SlotChildNamedSlots from '@/components/Component/Slot/SlotChildNamedSlots.vue'
 import SlotConditionalSlots from '@/components/Component/Slot/SlotConditionalSlots.vue'
+import SlotDynamicSlotNames from '@/components/Component/Slot/SlotDynamicSlotNames.vue'
+import { ref } from 'vue'
+const currentSlot = ref('headerOne')
+function toggleSlot(){
+  currentSlot.value = currentSlot.value === 'headerOne' ? 'headerTwo' : 'headerOne';
+}
 </script>
 
 <template>
@@ -52,6 +58,13 @@ import SlotConditionalSlots from '@/components/Component/Slot/SlotConditionalSlo
       This is the footer
     </template>
   </SlotConditionalSlots>
+
+  <hr>
+  <p>Dynamic slots</p>
+  <SlotDynamicSlotNames>
+    <template #[currentSlot]>{{ currentSlot === 'headerOne' ? 'Header one' : 'Header two' }}</template>  
+  </SlotDynamicSlotNames>
+  <button @click="toggleSlot" >Toggle dynamic slot (headerOne, headerTwo)</button>
 </template>
 
 <style scoped></style>
