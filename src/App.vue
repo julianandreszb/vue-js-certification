@@ -9,14 +9,14 @@
 // import RefsInsideFor from '@/components/TemplateRefs/RefsInsideFor.vue'
 // import RefAccessChildProp from '@/components/TemplateRefs/RefAccessChildProp.vue'
 // import ParentListening from '@/components/Component/Emit/ParentListening.vue'
-// import SlotComponentContainer from '@/components/Component/Slot/SlotComponentContainer.vue'
+import SlotComponentContainer from '@/components/Component/Slot/SlotComponentContainer.vue'
 // import ComponentsContainer from '@/components/Component/DynamicComponents/ComponentsContainer.vue'
 //import DefineAsyncComponent from '@/components/Component/AsyncComp/DefineAsyncComponent.vue'
-import VModelParent from '@/components/Component/VModel/VModelParent.vue'
+// import VModelParent from '@/components/Component/VModel/VModelParent.vue'
 </script>
 
 <template>
-  <VModelParent />
+  <SlotComponentContainer />
 </template>
 
 <style scoped></style>
