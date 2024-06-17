@@ -15,12 +15,12 @@
 // import VModelParent from '@/components/Component/VModel/VModelParent.vue'
 //import VModelParent from '@/components/Component/VModel/VModelParent.vue'
 // import ParentWrapper from '@/components/Component/Slot/ScopedSlots/ChildScopedSlotParentWrapper.vue'\
-
-import SlotFancyListWrapper from '@/components/Component/Slot/FancyList/SlotFancyListWrapper.vue'
+// import SlotFancyListWrapper from '@/components/Component/Slot/FancyList/SlotFancyListWrapper.vue'
+import CreateMovieRatingApp from '@/Projects/CreateMovieRatingApp.vue'
 </script>
 
 <template>
-  <SlotFancyListWrapper />
+  <CreateMovieRatingApp />
 </template>
 
 <style scoped></style>
