@@ -60,7 +60,7 @@ body {
 }
 
 .card-content {
-  padding: 20px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -69,6 +69,7 @@ body {
 .card-header {
   font-weight: bold;
   font-size: 1.2rem;
+  margin: 0;
 }
 
 .card-badges {
@@ -78,6 +79,7 @@ body {
   gap: 10px;
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .card-badge {
@@ -92,6 +94,8 @@ body {
   aspect-ratio: 9 / 16;
   object-fit: cover;
   margin-bottom: 20px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .card-rating {
