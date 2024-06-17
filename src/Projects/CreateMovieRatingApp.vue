@@ -24,7 +24,6 @@ const movies = ref(items)
             <li class="card-badge" v-for="genre in movie.genres" :key="genre">{{ genre }}</li>
           </ul>
           <p>{{ movie.description }}</p>
-          <div class="spacer-x1"></div>
           <div class="card-rating">
             <span>Rating: ({{ movie.rating }}/5) </span>
             <span v-for="_ in movie.rating">⭐️</span>
@@ -43,6 +42,9 @@ body {
   background-color: #000;
   height: 100vh;
   width: 100vw;
+}
+p {
+  margin: 0;
 }
 </style>
 
@@ -64,6 +66,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  height: 210px;
+
+  p {
+    margin-top: 6px;
+  }
 }
 
 .card-header {
@@ -102,8 +109,6 @@ body {
   display: flex;
   flex-direction: row;
   gap: 6px;
-}
-.spacer-x1 {
-  height: 10px;
+  margin-top: auto;
 }
 </style>
