@@ -1,4 +1,5 @@
 <script setup>
+import { StarIcon } from '@heroicons/vue/24/solid'
 import { items } from './movies.json'
 import { ref } from 'vue'
 // 1. Define the movies as reactive data.
@@ -26,7 +27,7 @@ const movies = ref(items)
           <p>{{ movie.description }}</p>
           <div class="card-rating">
             <span>Rating: ({{ movie.rating }}/5) </span>
-            <span v-for="_ in movie.rating">⭐️</span>
+            <StarIcon class="star-rating" v-for="_ in movie.rating" :key="_"></StarIcon>
           </div>
         </div>
       </article>
@@ -62,11 +63,12 @@ p {
 }
 
 .card-content {
+  position: relative;
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  height: 210px;
+  height: 240px;
 
   p {
     margin-top: 6px;
@@ -106,9 +108,19 @@ p {
 }
 
 .card-rating {
+  position: absolute;
+  bottom: 1rem;
   display: flex;
   flex-direction: row;
   gap: 6px;
   margin-top: auto;
+}
+
+.star-rating {
+  height: 20px;
+  width: 20px;
+}
+.star-rating:hover {
+  cursor: pointer;
 }
 </style>

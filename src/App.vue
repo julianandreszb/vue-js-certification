@@ -13,9 +13,10 @@
 // import ComponentsContainer from '@/components/Component/DynamicComponents/ComponentsContainer.vue'
 // import DefineAsyncComponent from '@/components/Component/AsyncComp/DefineAsyncComponent.vue'
 // import VModelParent from '@/components/Component/VModel/VModelParent.vue'
-//import VModelParent from '@/components/Component/VModel/VModelParent.vue'
+// import VModelParent from '@/components/Component/VModel/VModelParent.vue'
 // import ParentWrapper from '@/components/Component/Slot/ScopedSlots/ChildScopedSlotParentWrapper.vue'\
 // import SlotFancyListWrapper from '@/components/Component/Slot/FancyList/SlotFancyListWrapper.vue'
+// import TransitionComponent from '@/components/Transition/TransitionComponent.vue'
 import CreateMovieRatingApp from '@/Projects/CreateMovieRatingApp.vue'
 </script>
 
