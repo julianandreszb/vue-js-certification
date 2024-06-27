@@ -2,6 +2,7 @@
 import { StarIcon } from '@heroicons/vue/24/solid'
 import { items } from './movies.json'
 import { ref } from 'vue'
+
 // 1. Define the movies as reactive data.
 const movies = ref(items)
 
@@ -9,7 +10,16 @@ const movies = ref(items)
  This is an Icon that you can use to represent the stars if you like
  otherwise you could just use a simple ⭐️ emoji, or * character.
 */
-// import { StarIcon } from "@heroicons/vue/24/solid";
+function setMovieRating(movie, ratingValue) {
+  if (movie.rating === ratingValue) {
+    return
+  }
+  movie.rating = ratingValue
+}
+
+function isStartActive(rating, ratingIndex) {
+  return ratingIndex <= rating
+}
 </script>
 
 <template>
@@ -27,7 +37,13 @@ const movies = ref(items)
           <p>{{ movie.description }}</p>
           <div class="card-rating">
             <span>Rating: ({{ movie.rating }}/5) </span>
-            <StarIcon class="star-rating" v-for="_ in movie.rating" :key="_"></StarIcon>
+            <StarIcon
+              @click="setMovieRating(movie, ratingValue)"
+              class="star-rating"
+              :class="{ active: isStartActive(movie.rating, ratingValue) }"
+              v-for="ratingValue in 5"
+              :key="ratingValue"
+            ></StarIcon>
           </div>
         </div>
       </article>
@@ -120,6 +136,10 @@ p {
   height: 20px;
   width: 20px;
 }
+.star-rating.active {
+  color: #f5ad01;
+}
+
 .star-rating:hover {
   cursor: pointer;
 }
