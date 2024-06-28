@@ -28,6 +28,9 @@ function isStartActive(rating, ratingIndex) {
     <!-- 2. Use the Vue.js template syntax to display the movie information. -->
     <section class="cards-container">
       <article v-for="movie in movies" :key="movie.id" class="card">
+        <div class="start-icon-container" :class="{ active: movie.rating > 0 }">
+          <StarIcon /><span>{{ movie.rating }}</span>
+        </div>
         <img class="card-img" :src="movie.image" :alt="movie.description" />
         <div class="card-content">
           <h2 class="card-header">{{ movie.name }}</h2>
@@ -76,6 +79,7 @@ p {
   background-color: #fff;
   border-radius: 4px;
   text-align: left;
+  position: relative;
 }
 
 .card-content {
@@ -142,5 +146,24 @@ p {
 
 .star-rating:hover {
   cursor: pointer;
+}
+
+.start-icon-container {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  height: 40px;
+  width: 40px;
+  color: #dedede;
+  span {
+    position: absolute;
+    color: #000000;
+    left: 16px;
+    top: 12px;
+  }
+}
+
+.start-icon-container.active {
+  color: #f5ad01;
 }
 </style>

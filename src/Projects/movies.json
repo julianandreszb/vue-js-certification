@@ -35,6 +35,19 @@
 				"Drama"
 			],
 			"inTheaters": false
+		},
+		{
+			"id": 4,
+			"name": "The Hobbit",
+			"description": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+			"image": "https://m.media-amazon.com/images/I/71S7Z+YhJFL._AC_UF894,1000_QL80_.jpg",
+			"rating": 0,
+			"genres": [
+				"Action",
+				"Crime",
+				"Drama"
+			],
+			"inTheaters": false
 		}
 	]
 }
