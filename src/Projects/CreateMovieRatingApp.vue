@@ -24,12 +24,18 @@ function isStartActive(rating, ratingIndex) {
 
 <template>
   <!-- This is where your template goes	-->
-  <div>
+  <div class="container">
+
+    <section class="options-container">
+      <button>Add Movie</button>
+    </section>
+
     <!-- 2. Use the Vue.js template syntax to display the movie information. -->
     <section class="cards-container">
       <article v-for="movie in movies" :key="movie.id" class="card">
         <div class="start-icon-container" :class="{ active: movie.rating > 0 }">
-          <StarIcon /><span>{{ movie.rating }}</span>
+          <StarIcon />
+          <span>{{ movie.rating }}</span>
         </div>
         <img class="card-img" :src="movie.image" :alt="movie.description" />
         <div class="card-content">
@@ -51,18 +57,70 @@ function isStartActive(rating, ratingIndex) {
         </div>
       </article>
     </section>
+
+    <article class="overlay">
+      <form action="" class="form-add-movie">
+        <div class="field-group">
+          <label for="name">Name</label>
+          <input type="text" name="name" />
+        </div>
+        <div class="field-group">
+          <label for="description">Description</label>
+          <textarea name="description"></textarea>
+        </div>
+        <div class="field-group">
+          <label for="image">Image</label>
+          <input type="text" name="image" />
+        </div>
+        <div class="field-group">
+          <label for="genres">Genres</label>
+          <select name="genres" multiple>
+            <option value="Action">Action</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Drama">Drama</option>
+            <option value="Horror">Horror</option>
+            <option value="Romance">Romance</option>
+          </select>
+        </div>
+        <div class="field-group field-checkbox">
+          <input type="checkbox" name="in_theater" id="in_theater" />
+          <label for="in_theater">In Theaters</label>
+        </div>
+        <div class="field-group-actions" >
+          <button type="button">Cancel</button>
+          <button type="submit">Create</button>
+        </div>
+      </form>
+    </article>
   </div>
 </template>
 
 <style>
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.options-container {
+  padding-block: 1rem;
+  padding-inline: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
 body {
   margin: 0;
-  padding: 2rem;
+  padding: 0;
   box-sizing: border-box;
   background-color: #000;
   height: 100vh;
   width: 100vw;
+
+  font-family: Roboto, sans-serif;
 }
+
 p {
   margin: 0;
 }
@@ -70,8 +128,10 @@ p {
 
 <style scoped>
 .cards-container {
+  padding-inline: 1rem;
+  padding-block: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 20px;
 }
 
@@ -140,6 +200,7 @@ p {
   height: 20px;
   width: 20px;
 }
+
 .star-rating.active {
   color: #f5ad01;
 }
@@ -155,6 +216,7 @@ p {
   height: 40px;
   width: 40px;
   color: #dedede;
+
   span {
     position: absolute;
     color: #000000;
@@ -165,5 +227,54 @@ p {
 
 .start-icon-container.active {
   color: #f5ad01;
+}
+
+.overlay {
+  width: 100vw;
+  height: 100vh;
+}
+
+.form-add-movie {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #1c1c1c;
+  width: 400px;
+  padding: 1rem;
+}
+
+label, input, textarea {
+  color: #ffffff;
+  display: block;
+  border: none;
+}
+
+input, textarea {
+  background-color: #000000;
+}
+
+.field-group{
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field-group.field-checkbox{
+  display: flex;
+  flex-direction: row;
+  align-content: start;
+}
+
+.field-group-actions{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+  
+  button {
+    border-radius: 8px;
+    padding-inline: 0.5rem;
+    padding-block: 0.5rem;
+  }
 }
 </style>
