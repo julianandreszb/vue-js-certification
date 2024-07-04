@@ -25,7 +25,6 @@ function isStartActive(rating, ratingIndex) {
 <template>
   <!-- This is where your template goes	-->
   <div class="container">
-
     <section class="options-container">
       <button>Add Movie</button>
     </section>
@@ -86,9 +85,9 @@ function isStartActive(rating, ratingIndex) {
           <input type="checkbox" name="in_theater" id="in_theater" />
           <label for="in_theater">In Theaters</label>
         </div>
-        <div class="field-group-actions" >
-          <button type="button">Cancel</button>
-          <button type="submit">Create</button>
+        <div class="field-group-actions">
+          <button class="btn btn-cancel" type="button">Cancel</button>
+          <button class="btn btn-submit" type="submit">Create</button>
         </div>
       </form>
     </article>
@@ -96,7 +95,6 @@ function isStartActive(rating, ratingIndex) {
 </template>
 
 <style>
-
 .container {
   display: flex;
   flex-direction: column;
@@ -230,8 +228,16 @@ p {
 }
 
 .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  backdrop-filter: blur(5px); /* apply blur effect */
 }
 
 .form-add-movie {
@@ -241,40 +247,68 @@ p {
   background-color: #1c1c1c;
   width: 400px;
   padding: 1rem;
+  height: 400px;
 }
 
-label, input, textarea {
+label,
+input,
+textarea {
   color: #ffffff;
   display: block;
   border: none;
 }
 
-input, textarea {
+input,
+textarea {
   background-color: #000000;
 }
 
-.field-group{
+.field-group {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
 
-.field-group.field-checkbox{
+.field-group.field-checkbox {
   display: flex;
   flex-direction: row;
   align-content: start;
 }
 
-.field-group-actions{
+.field-group-actions {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 1rem;
-  
+
   button {
     border-radius: 8px;
     padding-inline: 0.5rem;
     padding-block: 0.5rem;
   }
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+}
+
+.btn-submit {
+  background-color: #3ba9c9;
+  color: white;
+}
+
+.btn-submit:hover {
+  background-color: #48ccf3;
+  color: white;
+}
+
+.btn-cancel {
+  background-color: #5b6773;
+  color: white;
+}
+.btn-cancel:hover {
+  background-color: #8293a4;
+  color: white;
 }
 </style>
