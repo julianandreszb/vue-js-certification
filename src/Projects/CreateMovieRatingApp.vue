@@ -1,10 +1,19 @@
 <script setup>
 import { StarIcon } from '@heroicons/vue/24/solid'
 import { items } from './movies.json'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 // 1. Define the movies as reactive data.
 const movies = ref(items)
+const isCreateMovieDialogOpen = ref(false)
+const movie = reactive({
+  name: '',
+  description: '',
+  image: '',
+  genres: [],
+  rating: 0,
+  inTheaters: false
+})
 
 /*
  This is an Icon that you can use to represent the stars if you like
@@ -20,13 +29,15 @@ function setMovieRating(movie, ratingValue) {
 function isStartActive(rating, ratingIndex) {
   return ratingIndex <= rating
 }
+
+function createMovie(movie) {}
 </script>
 
 <template>
   <!-- This is where your template goes	-->
   <div class="container">
     <section class="options-container">
-      <button>Add Movie</button>
+      <button @click="isCreateMovieDialogOpen = !isCreateMovieDialogOpen">Add Movie</button>
     </section>
 
     <!-- 2. Use the Vue.js template syntax to display the movie information. -->
@@ -57,23 +68,23 @@ function isStartActive(rating, ratingIndex) {
       </article>
     </section>
 
-    <article class="overlay">
+    <article v-if="isCreateMovieDialogOpen" class="overlay">
       <form action="" class="form-add-movie">
         <div class="field-group">
           <label for="name">Name</label>
-          <input type="text" name="name" />
+          <input v-model="movie.name" type="text" name="name" />
         </div>
         <div class="field-group">
           <label for="description">Description</label>
-          <textarea name="description"></textarea>
+          <textarea v-model="movie.description" name="description"></textarea>
         </div>
         <div class="field-group">
           <label for="image">Image</label>
-          <input type="text" name="image" />
+          <input v-model="movie.image" type="text" name="image" />
         </div>
         <div class="field-group">
           <label for="genres">Genres</label>
-          <select name="genres" multiple>
+          <select v-model="movie.genres" name="genres" multiple>
             <option value="Action">Action</option>
             <option value="Comedy">Comedy</option>
             <option value="Drama">Drama</option>
@@ -82,12 +93,18 @@ function isStartActive(rating, ratingIndex) {
           </select>
         </div>
         <div class="field-group field-checkbox">
-          <input type="checkbox" name="in_theater" id="in_theater" />
+          <input v-model="movie.inTheaters" type="checkbox" name="in_theater" id="in_theater" />
           <label for="in_theater">In Theaters</label>
         </div>
         <div class="field-group-actions">
-          <button class="btn btn-cancel" type="button">Cancel</button>
-          <button class="btn btn-submit" type="submit">Create</button>
+          <button
+            @click="isCreateMovieDialogOpen = !isCreateMovieDialogOpen"
+            class="btn btn-cancel"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button @click.prevent="createMovie" class="btn btn-submit" type="submit">Create</button>
         </div>
       </form>
     </article>
