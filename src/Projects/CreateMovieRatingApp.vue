@@ -30,36 +30,66 @@ function isStartActive(rating, ratingIndex) {
   return ratingIndex <= rating
 }
 
-function createMovie(movie) {}
+function resetMovie(movie) {
+  movie.name = ''
+  movie.description = ''
+  movie.image = ''
+  movie.genres = []
+  movie.inTheaters = false
+}
+
+function isMovieValid(movie) {
+  const isValid = movie.name && movie.description && movie.image && movie.genres.length > 0
+  if (!isValid) {
+    console.log('Movie is not valid', movie)
+  }
+  return isValid
+}
+
+function createMovie(movie) {
+  if (!isMovieValid(movie)) {
+    return
+  }
+  const newMovie = JSON.parse(JSON.stringify(movie))
+  resetMovie(movie)
+  movies.value.push(newMovie)
+  isCreateMovieDialogOpen.value = false
+}
 </script>
 
 <template>
   <!-- This is where your template goes	-->
   <div class="container">
     <section class="options-container">
-      <button @click="isCreateMovieDialogOpen = !isCreateMovieDialogOpen">Add Movie</button>
+      <button
+        type="button"
+        class="btn btn-submit"
+        @click="isCreateMovieDialogOpen = !isCreateMovieDialogOpen"
+      >
+        Add Movie
+      </button>
     </section>
 
     <!-- 2. Use the Vue.js template syntax to display the movie information. -->
     <section class="cards-container">
-      <article v-for="movie in movies" :key="movie.id" class="card">
-        <div class="start-icon-container" :class="{ active: movie.rating > 0 }">
+      <article v-for="movieVal in movies" :key="movieVal.id" class="card">
+        <div class="start-icon-container" :class="{ active: movieVal.rating > 0 }">
           <StarIcon />
-          <span>{{ movie.rating }}</span>
+          <span>{{ movieVal.rating }}</span>
         </div>
-        <img class="card-img" :src="movie.image" :alt="movie.description" />
+        <img class="card-img" :src="movieVal.image" :alt="movieVal.description" />
         <div class="card-content">
-          <h2 class="card-header">{{ movie.name }}</h2>
+          <h2 class="card-header">{{ movieVal.name }}</h2>
           <ul class="card-badges">
-            <li class="card-badge" v-for="genre in movie.genres" :key="genre">{{ genre }}</li>
+            <li class="card-badge" v-for="genre in movieVal.genres" :key="genre">{{ genre }}</li>
           </ul>
-          <p>{{ movie.description }}</p>
+          <textarea class="movie-description" rows="6" :value="movieVal.description"></textarea>
           <div class="card-rating">
-            <span>Rating: ({{ movie.rating }}/5) </span>
+            <span>Rating: ({{ movieVal.rating }}/5) </span>
             <StarIcon
-              @click="setMovieRating(movie, ratingValue)"
+              @click="setMovieRating(movieVal, ratingValue)"
               class="star-rating"
-              :class="{ active: isStartActive(movie.rating, ratingValue) }"
+              :class="{ active: isStartActive(movieVal.rating, ratingValue) }"
               v-for="ratingValue in 5"
               :key="ratingValue"
             ></StarIcon>
@@ -104,7 +134,9 @@ function createMovie(movie) {}
           >
             Cancel
           </button>
-          <button @click.prevent="createMovie" class="btn btn-submit" type="submit">Create</button>
+          <button @click.prevent="createMovie(movie)" class="btn btn-submit" type="submit">
+            Create
+          </button>
         </div>
       </form>
     </article>
@@ -146,7 +178,7 @@ p {
   padding-inline: 1rem;
   padding-block: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 20px;
 }
 
@@ -297,15 +329,12 @@ textarea {
   flex-direction: row;
   justify-content: space-between;
   gap: 1rem;
-
-  button {
-    border-radius: 8px;
-    padding-inline: 0.5rem;
-    padding-block: 0.5rem;
-  }
 }
 
 .btn {
+  border-radius: 8px;
+  padding-inline: 0.5rem;
+  padding-block: 0.5rem;
   border: none;
   cursor: pointer;
 }
@@ -327,5 +356,9 @@ textarea {
 .btn-cancel:hover {
   background-color: #8293a4;
   color: white;
+}
+
+.movie-description {
+  resize: none;
 }
 </style>
