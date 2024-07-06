@@ -4,8 +4,9 @@ import { items } from './movies.json'
 import { reactive, ref } from 'vue'
 
 // 1. Define the movies as reactive data.
+const isFormCreateMode = ref(true)
 const movies = ref(items)
-const isCreateMovieDialogOpen = ref(false)
+const isCreateEditMovieDialogOpen = ref(false)
 const movie = reactive({
   name: '',
   description: '',
@@ -51,9 +52,46 @@ function createMovie(movie) {
     return
   }
   const newMovie = JSON.parse(JSON.stringify(movie))
-  resetMovie(movie)
   movies.value.push(newMovie)
-  isCreateMovieDialogOpen.value = false
+  isCreateEditMovieDialogOpen.value = false
+}
+
+function editMovie(movie) {
+  if (!isMovieValid(movie)) {
+    return
+  }
+  movies.value = movies.value.map((currentMovie) => {
+    if (currentMovie.id === movie.id) {
+      currentMovie.name = movie.name
+      currentMovie.description = movie.description
+      currentMovie.image = movie.image
+      currentMovie.genres = movie.genres
+      currentMovie.inTheaters = movie.inTheaters
+      currentMovie.rating = movie.rating
+    }
+    return currentMovie
+  })
+  isCreateEditMovieDialogOpen.value = false
+}
+
+function startCreateMovieProcess() {
+  resetMovie(movie)
+  isFormCreateMode.value = false
+  isCreateEditMovieDialogOpen.value = true
+}
+
+function startEditMovieProcess(currentMovie) {
+  isFormCreateMode.value = false
+
+  movie.id = currentMovie.id
+  movie.name = currentMovie.name
+  movie.description = currentMovie.description
+  movie.image = currentMovie.image
+  movie.genres = currentMovie.genres
+  movie.inTheaters = currentMovie.inTheaters
+  movie.rating = currentMovie.rating
+
+  isCreateEditMovieDialogOpen.value = true
 }
 </script>
 
@@ -61,11 +99,7 @@ function createMovie(movie) {
   <!-- This is where your template goes	-->
   <div class="container">
     <section class="options-container">
-      <button
-        type="button"
-        class="btn btn-submit"
-        @click="isCreateMovieDialogOpen = !isCreateMovieDialogOpen"
-      >
+      <button type="button" class="btn btn-submit" @click="startCreateMovieProcess">
         Add Movie
       </button>
     </section>
@@ -101,7 +135,7 @@ function createMovie(movie) {
               <span class="card-icon-container"
                 ><TrashIcon class="icon card-icon-action"></TrashIcon
               ></span>
-              <span class="card-icon-container"
+              <span class="card-icon-container" @click="startEditMovieProcess(movieVal)"
                 ><PencilIcon class="icon card-icon-action"></PencilIcon
               ></span>
             </div>
@@ -110,7 +144,7 @@ function createMovie(movie) {
       </article>
     </section>
 
-    <article v-if="isCreateMovieDialogOpen" class="overlay">
+    <article v-if="isCreateEditMovieDialogOpen" class="overlay">
       <form action="" class="form-add-movie">
         <div class="field-group">
           <label for="name">Name</label>
@@ -140,14 +174,22 @@ function createMovie(movie) {
         </div>
         <div class="field-group-actions">
           <button
-            @click="isCreateMovieDialogOpen = !isCreateMovieDialogOpen"
+            @click="isCreateEditMovieDialogOpen = !isCreateEditMovieDialogOpen"
             class="btn btn-cancel"
             type="button"
           >
             Cancel
           </button>
-          <button @click.prevent="createMovie(movie)" class="btn btn-submit" type="submit">
+          <button
+            v-if="isFormCreateMode"
+            @click.prevent="createMovie(movie)"
+            class="btn btn-submit"
+            type="submit"
+          >
             Create
+          </button>
+          <button v-else @click.prevent="editMovie(movie)" class="btn btn-submit" type="submit">
+            Edit
           </button>
         </div>
       </form>
