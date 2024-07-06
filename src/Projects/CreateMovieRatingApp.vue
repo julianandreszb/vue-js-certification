@@ -1,5 +1,5 @@
 <script setup>
-import { StarIcon } from '@heroicons/vue/24/solid'
+import { StarIcon, TrashIcon, PencilIcon } from '@heroicons/vue/24/solid'
 import { items } from './movies.json'
 import { reactive, ref } from 'vue'
 
@@ -86,15 +86,25 @@ function createMovie(movie) {
           <div class="movie-description-container">
             <p>{{ movieVal.description }}</p>
           </div>
-          <div class="card-rating">
-            <span>Rating: ({{ movieVal.rating }}/5) </span>
-            <StarIcon
-              @click="setMovieRating(movieVal, ratingValue)"
-              class="star-rating"
-              :class="{ active: isStartActive(movieVal.rating, ratingValue) }"
-              v-for="ratingValue in 5"
-              :key="ratingValue"
-            ></StarIcon>
+          <div class="card-footer">
+            <div class="card-rating">
+              <span>Rating: ({{ movieVal.rating }}/5) </span>
+              <StarIcon
+                @click="setMovieRating(movieVal, ratingValue)"
+                class="icon star-rating"
+                :class="{ active: isStartActive(movieVal.rating, ratingValue) }"
+                v-for="ratingValue in 5"
+                :key="ratingValue"
+              ></StarIcon>
+            </div>
+            <div class="card-actions">
+              <span class="card-icon-container"
+                ><TrashIcon class="icon card-icon-action"></TrashIcon
+              ></span>
+              <span class="card-icon-container"
+                ><PencilIcon class="icon card-icon-action"></PencilIcon
+              ></span>
+            </div>
           </div>
         </div>
       </article>
@@ -236,16 +246,16 @@ p {
   border-top-right-radius: 4px;
 }
 
-.card-rating {
-  position: absolute;
-  bottom: 1rem;
+.card-footer {
   display: flex;
   flex-direction: row;
   gap: 6px;
   margin-top: auto;
+  width: 100%;
+  justify-content: space-between;
 }
 
-.star-rating {
+.icon {
   height: 20px;
   width: 20px;
 }
@@ -363,5 +373,28 @@ textarea {
 .movie-description-container {
   height: 6rem;
   overflow: scroll;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.card-icon-action {
+  padding: 0.5rem;
+  border-radius: 100%;
+  background-color: #c2cad8;
+}
+
+.card-rating {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.card-icon-container {
+  display: contents;
 }
 </style>
