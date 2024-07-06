@@ -83,7 +83,9 @@ function createMovie(movie) {
           <ul class="card-badges">
             <li class="card-badge" v-for="genre in movieVal.genres" :key="genre">{{ genre }}</li>
           </ul>
-          <textarea class="movie-description" rows="6" :value="movieVal.description"></textarea>
+          <div class="movie-description-container">
+            <p>{{ movieVal.description }}</p>
+          </div>
           <div class="card-rating">
             <span>Rating: ({{ movieVal.rating }}/5) </span>
             <StarIcon
@@ -358,7 +360,8 @@ textarea {
   color: white;
 }
 
-.movie-description {
-  resize: none;
+.movie-description-container {
+  height: 6rem;
+  overflow: scroll;
 }
 </style>
