@@ -102,6 +102,12 @@ const averageRating = computed(() => {
   const totalRatings = movies.value.reduce((sum, movie) => sum + movie.rating, 0)
   return totalRatings / movies.value.length
 })
+
+function startResetRatings() {
+  movies.value.forEach((movie) => {
+    movie.rating = 0
+  })
+}
 </script>
 
 <template>
@@ -109,13 +115,18 @@ const averageRating = computed(() => {
   <div class="container">
     <section class="options-container">
       <div>
-        <p class="movie-summary">
+        <p class="movies-summary">
           Total Movies: {{ movies.length }} / Average Rating: {{ averageRating }}
         </p>
       </div>
-      <button type="button" class="btn btn-submit" @click="startCreateMovieProcess">
-        Add Movie
-      </button>
+      <div class="movies-actions">
+        <button type="button" class="btn btn-submit" @click="startResetRatings">
+          Remove Ratings
+        </button>
+        <button type="button" class="btn btn-submit" @click="startCreateMovieProcess">
+          Add Movie
+        </button>
+      </div>
     </section>
 
     <!-- 2. Use the Vue.js template syntax to display the movie information. -->
@@ -459,9 +470,15 @@ textarea {
   display: contents;
 }
 
-.movie-summary {
+.movies-summary {
   font-size: 1.2rem;
   color: #fff;
   font-weight: bold;
+}
+
+.movies-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
 </style>
