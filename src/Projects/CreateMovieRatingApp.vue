@@ -1,7 +1,7 @@
 <script setup>
 import { StarIcon, TrashIcon, PencilIcon } from '@heroicons/vue/24/solid'
 import { items } from './movies.json'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 
 // 1. Define the movies as reactive data.
 const isFormCreateMode = ref(true)
@@ -80,25 +80,39 @@ function startCreateMovieProcess() {
   isCreateEditMovieDialogOpen.value = true
 }
 
-function startEditMovieProcess(currentMovie) {
+function startEditMovieProcess(editMovie) {
   isFormCreateMode.value = false
 
-  movie.id = currentMovie.id
-  movie.name = currentMovie.name
-  movie.description = currentMovie.description
-  movie.image = currentMovie.image
-  movie.genres = currentMovie.genres
-  movie.inTheaters = currentMovie.inTheaters
-  movie.rating = currentMovie.rating
+  movie.id = editMovie.id
+  movie.name = editMovie.name
+  movie.description = editMovie.description
+  movie.image = editMovie.image
+  movie.genres = editMovie.genres
+  movie.inTheaters = editMovie.inTheaters
+  movie.rating = editMovie.rating
 
   isCreateEditMovieDialogOpen.value = true
 }
+
+function startDeleteMovie(deleteMovie) {
+  movies.value = movies.value.filter((currentMovie) => currentMovie.id !== deleteMovie.id)
+}
+
+const averageRating = computed(() => {
+  const totalRatings = movies.value.reduce((sum, movie) => sum + movie.rating, 0)
+  return totalRatings / movies.value.length
+})
 </script>
 
 <template>
   <!-- This is where your template goes	-->
   <div class="container">
     <section class="options-container">
+      <div>
+        <p class="movie-summary">
+          Total Movies: {{ movies.length }} / Average Rating: {{ averageRating }}
+        </p>
+      </div>
       <button type="button" class="btn btn-submit" @click="startCreateMovieProcess">
         Add Movie
       </button>
@@ -132,7 +146,7 @@ function startEditMovieProcess(currentMovie) {
               ></StarIcon>
             </div>
             <div class="card-actions">
-              <span class="card-icon-container"
+              <span @click="startDeleteMovie(movieVal)" class="card-icon-container"
                 ><TrashIcon class="icon card-icon-action"></TrashIcon
               ></span>
               <span class="card-icon-container" @click="startEditMovieProcess(movieVal)"
@@ -208,7 +222,7 @@ function startEditMovieProcess(currentMovie) {
   padding-inline: 1rem;
   display: flex;
   flex-direction: row;
-  justify-content: end;
+  justify-content: space-between;
 }
 
 body {
@@ -298,6 +312,7 @@ p {
 }
 
 .icon {
+  cursor: pointer;
   height: 20px;
   width: 20px;
 }
@@ -430,6 +445,10 @@ textarea {
   background-color: #c2cad8;
 }
 
+.card-icon-action:hover {
+  background-color: #8a9194;
+}
+
 .card-rating {
   display: flex;
   flex-direction: row;
@@ -438,5 +457,11 @@ textarea {
 
 .card-icon-container {
   display: contents;
+}
+
+.movie-summary {
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: bold;
 }
 </style>
