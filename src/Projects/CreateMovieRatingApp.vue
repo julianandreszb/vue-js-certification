@@ -1,13 +1,13 @@
 <script setup>
-import { StarIcon, TrashIcon, PencilIcon } from '@heroicons/vue/24/solid'
 import { items } from './movies.json'
 import { computed, reactive, ref } from 'vue'
+import MovieItem from '@/Projects/MovieItem.vue'
 
 // 1. Define the movies as reactive data.
-const isFormCreateMode = ref(true)
 const movies = ref(items)
-const isCreateEditMovieDialogOpen = ref(false)
-const movie = reactive({
+const isModalOpen = ref(false)
+const form = reactive({
+  id: '',
   name: '',
   description: '',
   image: '',
@@ -16,27 +16,14 @@ const movie = reactive({
   inTheaters: false
 })
 
-/*
- This is an Icon that you can use to represent the stars if you like
- otherwise you could just use a simple ⭐️ emoji, or * character.
-*/
-function setMovieRating(movie, ratingValue) {
-  if (movie.rating === ratingValue) {
-    return
-  }
-  movie.rating = ratingValue
-}
-
-function isStartActive(rating, ratingIndex) {
-  return ratingIndex <= rating
-}
-
-function resetMovie(movie) {
-  movie.name = ''
-  movie.description = ''
-  movie.image = ''
-  movie.genres = []
-  movie.inTheaters = false
+function clearForm() {
+  form.id = ''
+  form.name = ''
+  form.description = ''
+  form.image = ''
+  form.genres = []
+  form.rating = 0
+  form.inTheaters = false
 }
 
 function isMovieValid(movie) {
@@ -47,66 +34,92 @@ function isMovieValid(movie) {
   return isValid
 }
 
-function createMovie(movie) {
-  if (!isMovieValid(movie)) {
-    return
-  }
-  const newMovie = JSON.parse(JSON.stringify(movie))
-  movies.value.push(newMovie)
-  isCreateEditMovieDialogOpen.value = false
+function showDialog() {
+  isModalOpen.value = true
 }
 
-function editMovie(movie) {
-  if (!isMovieValid(movie)) {
+function hideDialog() {
+  isModalOpen.value = false
+}
+
+function createMovie() {
+  if (!isMovieValid(form)) {
     return
   }
-  movies.value = movies.value.map((currentMovie) => {
-    if (currentMovie.id === movie.id) {
-      currentMovie.name = movie.name
-      currentMovie.description = movie.description
-      currentMovie.image = movie.image
-      currentMovie.genres = movie.genres
-      currentMovie.inTheaters = movie.inTheaters
-      currentMovie.rating = movie.rating
+  form.id = Math.random().toString(36).substring(2, 9) // Generate a unique ID for the movie.
+  movies.value.push(JSON.parse(JSON.stringify(form)))
+  hideDialog()
+}
+
+function updateMovie() {
+  if (!isMovieValid(form)) {
+    return
+  }
+  movies.value = movies.value.map((movie) => {
+    if (movie.id === form.id) {
+      movie.name = form.name
+      movie.description = form.description
+      movie.image = form.image
+      movie.genres = form.genres
+      movie.inTheaters = form.inTheaters
+      movie.rating = form.rating
     }
-    return currentMovie
+    return movie
   })
-  isCreateEditMovieDialogOpen.value = false
+  hideDialog()
 }
 
 function startCreateMovieProcess() {
-  resetMovie(movie)
-  isFormCreateMode.value = false
-  isCreateEditMovieDialogOpen.value = true
+  clearForm()
+  showDialog()
 }
 
-function startEditMovieProcess(editMovie) {
-  isFormCreateMode.value = false
+function editMovie(id) {
+  const movie = movies.value.find((movie) => movie.id === id)
 
-  movie.id = editMovie.id
-  movie.name = editMovie.name
-  movie.description = editMovie.description
-  movie.image = editMovie.image
-  movie.genres = editMovie.genres
-  movie.inTheaters = editMovie.inTheaters
-  movie.rating = editMovie.rating
-
-  isCreateEditMovieDialogOpen.value = true
+  form.id = movie.id
+  form.name = movie.name
+  form.description = movie.description
+  form.image = movie.image
+  form.genres = movie.genres
+  form.inTheaters = movie.inTheaters
+  form.rating = movie.rating
+  showDialog()
 }
 
-function startDeleteMovie(deleteMovie) {
-  movies.value = movies.value.filter((currentMovie) => currentMovie.id !== deleteMovie.id)
+function deleteMovie(id) {
+  movies.value = movies.value.filter((currentMovie) => currentMovie.id !== id)
 }
 
 const averageRating = computed(() => {
-  const totalRatings = movies.value.reduce((sum, movie) => sum + movie.rating, 0)
-  return totalRatings / movies.value.length
+  if (movies.value.length) {
+    const totalRatings = movies.value.reduce((sum, movie) => sum + movie.rating, 0)
+    return totalRatings / movies.value.length
+  }
+  return 0
 })
 
 function startResetRatings() {
   movies.value.forEach((movie) => {
     movie.rating = 0
   })
+}
+
+function setMovieRating(id, ratingValue) {
+  movies.value = movies.value.map((movie) => {
+    if (movie.id === id) {
+      movie.rating = ratingValue
+    }
+    return movie
+  })
+}
+
+function saveMovie() {
+  if (form.id !== '') {
+    updateMovie()
+  } else {
+    createMovie()
+  }
 }
 </script>
 
@@ -131,61 +144,33 @@ function startResetRatings() {
 
     <!-- 2. Use the Vue.js template syntax to display the movie information. -->
     <section class="cards-container">
-      <article v-for="movieVal in movies" :key="movieVal.id" class="card">
-        <div class="start-icon-container" :class="{ active: movieVal.rating > 0 }">
-          <StarIcon />
-          <span>{{ movieVal.rating }}</span>
-        </div>
-        <img class="card-img" :src="movieVal.image" :alt="movieVal.description" />
-        <div class="card-content">
-          <h2 class="card-header">{{ movieVal.name }}</h2>
-          <ul class="card-badges">
-            <li class="card-badge" v-for="genre in movieVal.genres" :key="genre">{{ genre }}</li>
-          </ul>
-          <div class="movie-description-container">
-            <p>{{ movieVal.description }}</p>
-          </div>
-          <div class="card-footer">
-            <div class="card-rating">
-              <span>Rating: ({{ movieVal.rating }}/5) </span>
-              <StarIcon
-                @click="setMovieRating(movieVal, ratingValue)"
-                class="icon star-rating"
-                :class="{ active: isStartActive(movieVal.rating, ratingValue) }"
-                v-for="ratingValue in 5"
-                :key="ratingValue"
-              ></StarIcon>
-            </div>
-            <div class="card-actions">
-              <span @click="startDeleteMovie(movieVal)" class="card-icon-container"
-                ><TrashIcon class="icon card-icon-action"></TrashIcon
-              ></span>
-              <span class="card-icon-container" @click="startEditMovieProcess(movieVal)"
-                ><PencilIcon class="icon card-icon-action"></PencilIcon
-              ></span>
-            </div>
-          </div>
-        </div>
-      </article>
+      <MovieItem
+        v-for="movieVal in movies"
+        :key="movieVal.id"
+        :movie="movieVal"
+        @delete="deleteMovie"
+        @edit="editMovie"
+        @update:rating="setMovieRating"
+      />
     </section>
 
-    <article v-if="isCreateEditMovieDialogOpen" class="overlay">
-      <form action="" class="form-add-movie">
+    <article v-if="isModalOpen" class="overlay">
+      <form class="form-add-movie" @submit.prevent="saveMovie">
         <div class="field-group">
           <label for="name">Name</label>
-          <input v-model="movie.name" type="text" name="name" />
+          <input v-model="form.name" type="text" name="name" />
         </div>
         <div class="field-group">
           <label for="description">Description</label>
-          <textarea v-model="movie.description" name="description"></textarea>
+          <textarea v-model="form.description" name="description"></textarea>
         </div>
         <div class="field-group">
           <label for="image">Image</label>
-          <input v-model="movie.image" type="text" name="image" />
+          <input v-model="form.image" type="text" name="image" />
         </div>
         <div class="field-group">
           <label for="genres">Genres</label>
-          <select v-model="movie.genres" name="genres" multiple>
+          <select v-model="form.genres" name="genres" multiple>
             <option value="Action">Action</option>
             <option value="Comedy">Comedy</option>
             <option value="Drama">Drama</option>
@@ -194,27 +179,14 @@ function startResetRatings() {
           </select>
         </div>
         <div class="field-group field-checkbox">
-          <input v-model="movie.inTheaters" type="checkbox" name="in_theater" id="in_theater" />
+          <input v-model="form.inTheaters" type="checkbox" name="in_theater" id="in_theater" />
           <label for="in_theater">In Theaters</label>
         </div>
         <div class="field-group-actions">
-          <button
-            @click="isCreateEditMovieDialogOpen = !isCreateEditMovieDialogOpen"
-            class="btn btn-cancel"
-            type="button"
-          >
-            Cancel
-          </button>
-          <button
-            v-if="isFormCreateMode"
-            @click.prevent="createMovie(movie)"
-            class="btn btn-submit"
-            type="submit"
-          >
-            Create
-          </button>
-          <button v-else @click.prevent="editMovie(movie)" class="btn btn-submit" type="submit">
-            Edit
+          <button @click="hideDialog" class="btn btn-cancel" type="button">Cancel</button>
+
+          <button class="btn btn-submit" type="submit">
+            <span v-if="form.id">Edit</span><span v-else>Submit</span>
           </button>
         </div>
       </form>
@@ -259,101 +231,6 @@ p {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 20px;
-}
-
-.card {
-  background-color: #fff;
-  border-radius: 4px;
-  text-align: left;
-  position: relative;
-}
-
-.card-content {
-  position: relative;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  height: 240px;
-
-  p {
-    margin-top: 6px;
-  }
-}
-
-.card-header {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-.card-badges {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 10px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.card-badge {
-  background-color: rebeccapurple;
-  padding-inline: 6px;
-  color: #fff;
-  border-radius: 8px;
-}
-
-.card-img {
-  width: 100%;
-  aspect-ratio: 9 / 16;
-  object-fit: cover;
-  margin-bottom: 20px;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-}
-
-.card-footer {
-  display: flex;
-  flex-direction: row;
-  gap: 6px;
-  margin-top: auto;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.icon {
-  cursor: pointer;
-  height: 20px;
-  width: 20px;
-}
-
-.star-rating.active {
-  color: #f5ad01;
-}
-
-.star-rating:hover {
-  cursor: pointer;
-}
-
-.start-icon-container {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  height: 40px;
-  width: 40px;
-  color: #dedede;
-
-  span {
-    position: absolute;
-    color: #000000;
-    left: 16px;
-    top: 12px;
-  }
-}
-
-.start-icon-container.active {
-  color: #f5ad01;
 }
 
 .overlay {
@@ -436,38 +313,6 @@ textarea {
 .btn-cancel:hover {
   background-color: #8293a4;
   color: white;
-}
-
-.movie-description-container {
-  height: 6rem;
-  overflow: scroll;
-}
-
-.card-actions {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.card-icon-action {
-  padding: 0.5rem;
-  border-radius: 100%;
-  background-color: #c2cad8;
-}
-
-.card-icon-action:hover {
-  background-color: #8a9194;
-}
-
-.card-rating {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.card-icon-container {
-  display: contents;
 }
 
 .movies-summary {
