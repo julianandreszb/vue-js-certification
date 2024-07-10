@@ -2,6 +2,7 @@
 import { items } from './movies.json'
 import { computed, reactive, ref } from 'vue'
 import MovieItem from '@/Projects/MovieItem.vue'
+import MovieForm from '@/Projects/MovieForm.vue'
 
 // 1. Define the movies as reactive data.
 const movies = ref(items)
@@ -114,7 +115,7 @@ function setMovieRating(id, ratingValue) {
   })
 }
 
-function saveMovie() {
+function saveMovie(form) {
   if (form.id !== '') {
     updateMovie()
   } else {
@@ -155,41 +156,7 @@ function saveMovie() {
     </section>
 
     <article v-if="isModalOpen" class="overlay">
-      <form class="form-add-movie" @submit.prevent="saveMovie">
-        <div class="field-group">
-          <label for="name">Name</label>
-          <input v-model="form.name" type="text" name="name" />
-        </div>
-        <div class="field-group">
-          <label for="description">Description</label>
-          <textarea v-model="form.description" name="description"></textarea>
-        </div>
-        <div class="field-group">
-          <label for="image">Image</label>
-          <input v-model="form.image" type="text" name="image" />
-        </div>
-        <div class="field-group">
-          <label for="genres">Genres</label>
-          <select v-model="form.genres" name="genres" multiple>
-            <option value="Action">Action</option>
-            <option value="Comedy">Comedy</option>
-            <option value="Drama">Drama</option>
-            <option value="Horror">Horror</option>
-            <option value="Romance">Romance</option>
-          </select>
-        </div>
-        <div class="field-group field-checkbox">
-          <input v-model="form.inTheaters" type="checkbox" name="in_theater" id="in_theater" />
-          <label for="in_theater">In Theaters</label>
-        </div>
-        <div class="field-group-actions">
-          <button @click="hideDialog" class="btn btn-cancel" type="button">Cancel</button>
-
-          <button class="btn btn-submit" type="submit">
-            <span v-if="form.id">Edit</span><span v-else>Submit</span>
-          </button>
-        </div>
-      </form>
+      <MovieForm @cancel="hideDialog" @update:modelValue="saveMovie" :model-value="form" />
     </article>
   </div>
 </template>
@@ -222,6 +189,24 @@ body {
 p {
   margin: 0;
 }
+
+.btn {
+  border-radius: 8px;
+  padding-inline: 0.5rem;
+  padding-block: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-submit {
+  background-color: #3ba9c9;
+  color: white;
+}
+
+.btn-submit:hover {
+  background-color: #48ccf3;
+  color: white;
+}
 </style>
 
 <style scoped>
@@ -244,75 +229,6 @@ p {
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
   backdrop-filter: blur(5px); /* apply blur effect */
-}
-
-.form-add-movie {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background-color: #1c1c1c;
-  width: 400px;
-  padding: 1rem;
-  height: 400px;
-}
-
-label,
-input,
-textarea {
-  color: #ffffff;
-  display: block;
-  border: none;
-}
-
-input,
-textarea {
-  background-color: #000000;
-}
-
-.field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.field-group.field-checkbox {
-  display: flex;
-  flex-direction: row;
-  align-content: start;
-}
-
-.field-group-actions {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.btn {
-  border-radius: 8px;
-  padding-inline: 0.5rem;
-  padding-block: 0.5rem;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-submit {
-  background-color: #3ba9c9;
-  color: white;
-}
-
-.btn-submit:hover {
-  background-color: #48ccf3;
-  color: white;
-}
-
-.btn-cancel {
-  background-color: #5b6773;
-  color: white;
-}
-.btn-cancel:hover {
-  background-color: #8293a4;
-  color: white;
 }
 
 .movies-summary {
