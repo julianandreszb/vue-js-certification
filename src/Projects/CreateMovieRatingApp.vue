@@ -1,8 +1,9 @@
 <script setup>
 import { items } from './movies.json'
-import { computed, reactive, ref } from 'vue'
+import { computed, defineAsyncComponent, reactive, ref } from 'vue'
 import MovieItem from '@/Projects/MovieItem.vue'
-import MovieForm from '@/Projects/MovieForm.vue'
+const MovieForm = defineAsyncComponent(() => import('@/Projects/MovieForm.vue'))
+const AppModal = defineAsyncComponent(() => import('@/Projects/AppModal.vue'))
 
 // 1. Define the movies as reactive data.
 const movies = ref(items)
@@ -155,9 +156,9 @@ function saveMovie(form) {
       />
     </section>
 
-    <article v-if="isModalOpen" class="overlay">
+    <AppModal v-if="isModalOpen" @close="hideDialog" :title="form.id ? 'Edit Movie' : 'Save Movie'">
       <MovieForm @cancel="hideDialog" @update:modelValue="saveMovie" :model-value="form" />
-    </article>
+    </AppModal>
   </div>
 </template>
 
@@ -216,19 +217,6 @@ p {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 20px;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
-  backdrop-filter: blur(5px); /* apply blur effect */
 }
 
 .movies-summary {
