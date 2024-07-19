@@ -3,6 +3,10 @@ const props = defineProps({
   title: {
     type: String,
     default: null
+  },
+  show: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -10,13 +14,15 @@ const emit = defineEmits(['close'])
 </script>
 
 <template>
-  <article class="overlay">
-    <div class="modal-content-wrap">
-      <h2 class="modal-title">{{ props.title }}</h2>
-      <span @click="emit('close')" class="close-button">×</span>
-      <slot />
-    </div>
-  </article>
+  <transition>
+    <article v-if="show" class="overlay">
+      <div class="modal-content-wrap">
+        <h2 class="modal-title">{{ props.title }}</h2>
+        <span @click="emit('close')" class="close-button">×</span>
+        <slot />
+      </div>
+    </article>
+  </transition>
 </template>
 
 <style scoped>
@@ -58,5 +64,22 @@ const emit = defineEmits(['close'])
 .close-button:hover {
   cursor: pointer;
   color: lightgray;
+}
+
+.v-enter-active,
+.v-leave-active,
+.v-enter-active .modal-content-wrap,
+.v-leave-active .modal-content-wrap {
+  transition: all 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.v-enter-from .modal-content-wrap,
+.v-leave-to .modal-content-wrap {
+  transform: translateY(-50px);
 }
 </style>

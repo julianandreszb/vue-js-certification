@@ -156,7 +156,11 @@ function saveMovie(form) {
       />
     </section>
 
-    <AppModal v-if="isModalOpen" @close="hideDialog" :title="form.id ? 'Edit Movie' : 'Save Movie'">
+    <AppModal
+      :show="isModalOpen"
+      @close="hideDialog"
+      :title="form.id ? 'Edit Movie' : 'Save Movie'"
+    >
       <MovieForm @cancel="hideDialog" @update:modelValue="saveMovie" :model-value="form" />
     </AppModal>
   </div>
