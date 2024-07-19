@@ -1,9 +1,13 @@
 <script setup>
+import { nextTick, onMounted, ref } from 'vue'
+
 const props = defineProps({
   modelValue: {
     type: Object
   }
 })
+const movieNameRef = ref(null)
+onMounted(() => movieNameRef.value.focus())
 
 const emit = defineEmits(['update:modelValue', 'cancel'])
 </script>
@@ -12,7 +16,7 @@ const emit = defineEmits(['update:modelValue', 'cancel'])
   <form class="form-add-movie" @submit.prevent="() => emit('update:modelValue', props.modelValue)">
     <div class="field-group">
       <label for="name">Name</label>
-      <input v-model="props.modelValue.name" type="text" name="name" />
+      <input ref="movieNameRef" v-model="props.modelValue.name" type="text" name="name" />
     </div>
     <div class="field-group">
       <label for="description">Description</label>
