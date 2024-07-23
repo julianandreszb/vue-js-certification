@@ -1,9 +1,9 @@
 <script setup>
 import { items } from './movies.json'
 import { computed, defineAsyncComponent, reactive, ref } from 'vue'
-import MovieItem from '@/Projects/MovieItem.vue'
-const MovieForm = defineAsyncComponent(() => import('@/Projects/MovieForm.vue'))
-const AppModal = defineAsyncComponent(() => import('@/Projects/AppModal.vue'))
+import MovieItem from '@/projects/movies/components/MovieItem.vue'
+const MovieForm = defineAsyncComponent(() => import('@/projects/movies/components/MovieForm.vue'))
+const AppModal = defineAsyncComponent(() => import('@/projects/movies/components/AppModal.vue'))
 
 // 1. Define the movies as reactive data.
 const movies = ref(items)

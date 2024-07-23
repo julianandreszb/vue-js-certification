@@ -17,11 +17,12 @@
 // import ParentWrapper from '@/components/Component/Slot/ScopedSlots/ChildScopedSlotParentWrapper.vue'\
 // import SlotFancyListWrapper from '@/components/Component/Slot/FancyList/SlotFancyListWrapper.vue'
 // import TransitionComponent from '@/components/Transition/TransitionComponent.vue'
-import CreateMovieRatingApp from '@/Projects/CreateMovieRatingApp.vue'
+// import CreateMovieRatingApp from '@/projects/movies/CreateMovieRatingApp.vue'
+import CountDown from '@/projects/newYearsCountdown/CountDown.vue'
 </script>
 
 <template>
-  <CreateMovieRatingApp />
+  <CountDown />
 </template>
 
 <style scoped></style>
