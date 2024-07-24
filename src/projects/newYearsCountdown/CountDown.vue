@@ -1,7 +1,7 @@
 <script setup>
 import CountdownHeader from '@/projects/newYearsCountdown/components/CountdownHeader.vue'
 import CountdownSegment from '@/projects/newYearsCountdown/components/CountdownSegment.vue'
-import { onMounted, onUnmounted, reactive, watch } from 'vue'
+import { onMounted, onUnmounted, reactive } from 'vue'
 
 const timeRemaining = reactive({
   days: 0,
@@ -15,26 +15,20 @@ const calculateTimeRemaining = () => {
   const nextYear = new Date(now.getFullYear() + 1, 0, 1)
   const diff = nextYear - now
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+  const oneHour = 1000 * 60 * 60
+  const oneDay = oneHour * 24
+  const oneMinute = oneHour / 60
+
+  const days = Math.floor(diff / oneDay)
+  const hours = Math.floor((diff % oneDay) / oneHour)
+  const minutes = Math.floor((diff % oneHour) / oneMinute)
+  const seconds = Math.floor((diff % oneMinute) / 1000)
 
   timeRemaining.days = days
   timeRemaining.hours = hours
   timeRemaining.minutes = minutes
   timeRemaining.seconds = seconds
 }
-
-watch(
-  [
-    () => timeRemaining.days,
-    () => timeRemaining.hours,
-    () => timeRemaining.minutes,
-    () => timeRemaining.seconds
-  ],
-  ([newDays, newHours, newMinutes, newSeconds], [oldDays, oldHours, oldMinutes, oldSeconds]) => {}
-)
 
 let intervalId
 

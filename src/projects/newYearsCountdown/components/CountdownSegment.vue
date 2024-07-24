@@ -2,12 +2,14 @@
 defineProps({
   label: String,
   number: Number
-});
+})
 </script>
 <template>
   <div class="segment">
     <div class="number-wrapper">
-      <span class="number">{{ number }}</span>
+      <transition>
+        <span :key="number" class="number">{{ number }}</span>
+      </transition>
     </div>
     <span class="block pt-2 label">{{ label }}</span>
   </div>
@@ -16,9 +18,11 @@ defineProps({
 .segment {
   @apply text-center w-[80px];
 }
+
 .number-wrapper {
   @apply relative pt-10 overflow-hidden;
 }
+
 .number {
   transform: translateX(-50%);
   font-size: 32px;
