@@ -18,11 +18,13 @@
 // import SlotFancyListWrapper from '@/components/Component/Slot/FancyList/SlotFancyListWrapper.vue'
 // import TransitionComponent from '@/components/Transition/TransitionComponent.vue'
 // import CreateMovieRatingApp from '@/projects/movies/CreateMovieRatingApp.vue'
-import CountDown from '@/projects/newYearsCountdown/CountDown.vue'
+// import CountDown from '@/projects/newYearsCountdown/CountDown.vue'
+// import CartBug from '@/projects/shoppingCartBug1/CartBug.vue'
+import TicTacToe from '@/projects/TicTacToe/ToeBoard.vue'
 </script>
 
 <template>
-  <CountDown />
+  <TicTacToe />
 </template>
 
 <style scoped></style>
