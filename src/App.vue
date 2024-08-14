@@ -20,11 +20,12 @@
 // import CreateMovieRatingApp from '@/projects/movies/CreateMovieRatingApp.vue'
 // import CountDown from '@/projects/newYearsCountdown/CountDown.vue'
 // import CartBug from '@/projects/shoppingCartBug1/CartBug.vue'
-import TicTacToe from '@/projects/TicTacToe/ToeBoard.vue'
+// import TicTacToe from '@/projects/TicTacToe/ToeBoard.vue'
+import VirtualAquarium from '@/projects/virtual-aquarium/VirtualAquarium.vue'
 </script>
 
 <template>
-  <TicTacToe />
+  <VirtualAquarium />
 </template>
 
 <style scoped></style>
