@@ -5,7 +5,7 @@ import VAquarium from '@/projects/virtual-aquarium/VAquarium.vue'
 
 <template>
   <article class="container">
-    <section>
+    <section class="section-container">
       <FishForm />
     </section>
     <section>
@@ -18,5 +18,9 @@ import VAquarium from '@/projects/virtual-aquarium/VAquarium.vue'
 .container {
   display: flex;
   flex-direction: row;
+}
+.section-container {
+  padding: 1rem;
+  background-color: #1f407b;
 }
 </style>
