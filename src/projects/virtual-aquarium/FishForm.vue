@@ -19,23 +19,33 @@ const fishes = reactive([
 
 const emit = defineEmits(['addFish'])
 
+function getRandomPosition(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
 function handleSubmit() {
   for (const fish of fishes) {
     if (fish.selected) {
+      const top = getRandomPosition(0, 750)
+      const left = getRandomPosition(0, 910)
+
       emit('addFish', {
+        isLive: true,
+        isHungry: false,
+        hungryTimeLeft: 0,
         name: fishName.value,
         img: fish.img,
         id: `${fish.id}`,
         position: {
-          xCurrentDirection: 1,
-          yCurrentDirection: 1,
-          left: 0,
-          top: 0
+          xCurrentDirection: getRandomPosition(0, 1),
+          yCurrentDirection: getRandomPosition(0, 1),
+          left: left,
+          top: top
         },
         style: {
           position: 'absolute',
-          top: '50px',
-          left: '50px'
+          top: `${top}px`,
+          left: `${left}px`
         }
       })
       fishName.value = ''
