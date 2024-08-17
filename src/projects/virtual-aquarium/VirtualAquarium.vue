@@ -1,15 +1,20 @@
 <script setup>
 import FishForm from '@/projects/virtual-aquarium/FishForm.vue'
 import VAquarium from '@/projects/virtual-aquarium/VAquarium.vue'
+import { ref } from 'vue'
+const aquarium = ref(null)
+function addFishListener(fish) {
+  aquarium.value && aquarium.value.addFish(fish)
+}
 </script>
 
 <template>
   <article class="container">
     <section class="section-container">
-      <FishForm />
+      <FishForm @addFish="addFishListener" />
     </section>
     <section>
-      <VAquarium />
+      <VAquarium ref="aquarium" />
     </section>
   </article>
 </template>

@@ -5,9 +5,10 @@ import fishGoldenPurple from '/aquarium/golden-purple-fish.png'
 import fishTropical from '/aquarium/tropical-fish.png'
 import fishGuppies from '/aquarium/guppie.png'
 
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import VFish from '@/projects/virtual-aquarium/VFish.vue'
 
+const fishName = ref('')
 const fishes = reactive([
   { selected: true, img: fishTuna, id: 'fishTuna' },
   { selected: false, img: fishGoldfish, id: 'fishGoldfish' },
@@ -19,8 +20,28 @@ const fishes = reactive([
 const emit = defineEmits(['addFish'])
 
 function handleSubmit() {
-  alert('Fish added to the aquarium!')
-  emit('addFish', { name: 'New Fish', img: fishTuna })
+  for (const fish of fishes) {
+    if (fish.selected) {
+      emit('addFish', {
+        name: fishName.value,
+        img: fish.img,
+        id: `${fish.id}`,
+        position: {
+          xCurrentDirection: 1,
+          yCurrentDirection: 1,
+          left: 0,
+          top: 0
+        },
+        style: {
+          position: 'absolute',
+          top: '50px',
+          left: '50px'
+        }
+      })
+      fishName.value = ''
+      break
+    }
+  }
 }
 
 function handleFishClick(id) {
@@ -41,7 +62,7 @@ function handleFishClick(id) {
     </div>
     <div class="form-group">
       <label for="fishName">Fish Name:</label>
-      <input type="text" name="fishName" id="fishName" />
+      <input v-model="fishName" type="text" name="fishName" id="fishName" />
     </div>
     <button type="submit">Add Fish</button>
   </form>

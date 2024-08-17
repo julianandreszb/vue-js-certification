@@ -1,50 +1,70 @@
 <script setup>
 import VFish from '@/projects/virtual-aquarium/VFish.vue'
-import fishGuppies from '/aquarium/guppie.png'
 import { reactive } from 'vue'
-const fish = reactive({
-  img: fishGuppies,
-  id: 'Guppies1',
-  position: {
-    xCurrentDirection: 1,
-    yCurrentDirection: 1,
-    left: 0
-  }
+const fishes = reactive([])
+
+function addFish(fish) {
+  console.log(`addFish: `, fish)
+  fish.id += fishes.length
+  const reactiveFish = reactive(fish)
+  fishes.push(reactiveFish)
+  setInterval(() => {
+    // Update left position
+    // 1: right
+    // 0: left
+    if (reactiveFish.position.xCurrentDirection && reactiveFish.position.left <= 910) {
+      reactiveFish.position.xCurrentDirection = true
+    }
+    if (reactiveFish.position.xCurrentDirection && reactiveFish.position.left >= 910) {
+      reactiveFish.position.xCurrentDirection = false
+    }
+    if (!reactiveFish.position.xCurrentDirection && reactiveFish.position.left >= 0) {
+      reactiveFish.position.xCurrentDirection = false
+    }
+    if (!reactiveFish.position.xCurrentDirection && reactiveFish.position.left <= 0) {
+      reactiveFish.position.xCurrentDirection = true
+    }
+
+    reactiveFish.position.left = reactiveFish.position.xCurrentDirection
+      ? (reactiveFish.position.left += 2)
+      : (reactiveFish.position.left -= 2)
+
+    reactiveFish.style.left = `${reactiveFish.position.left}px`
+    reactiveFish.style.transform = reactiveFish.position.xCurrentDirection
+      ? 'scaleX(1)'
+      : 'scaleX(-1)'
+
+    // Update top position
+    // 1: down
+    // 0: up
+    if (reactiveFish.position.yCurrentDirection && reactiveFish.position.top <= 750) {
+      reactiveFish.position.yCurrentDirection = true
+    }
+    if (reactiveFish.position.yCurrentDirection && reactiveFish.position.top >= 750) {
+      reactiveFish.position.yCurrentDirection = false
+    }
+    if (!reactiveFish.position.yCurrentDirection && reactiveFish.position.top >= 0) {
+      reactiveFish.position.yCurrentDirection = false
+    }
+    if (!reactiveFish.position.yCurrentDirection && reactiveFish.position.top <= 0) {
+      reactiveFish.position.yCurrentDirection = true
+    }
+
+    reactiveFish.position.top = reactiveFish.position.yCurrentDirection
+      ? (reactiveFish.position.top += 2)
+      : (reactiveFish.position.top -= 2)
+
+    reactiveFish.style.top = `${reactiveFish.position.top}px`
+  }, 50)
+}
+defineExpose({
+  addFish
 })
-const fishStyle = reactive({
-  position: 'absolute',
-  top: '50px',
-  left: '50px'
-})
-
-setInterval(() => {
-  // 1: right
-  // 0: left
-  if (fish.position.xCurrentDirection && fish.position.left <= 910) {
-    fish.position.xCurrentDirection = true
-  }
-  if (fish.position.xCurrentDirection && fish.position.left >= 910) {
-    fish.position.xCurrentDirection = false
-  }
-  if (!fish.position.xCurrentDirection && fish.position.left >= 0) {
-    fish.position.xCurrentDirection = false
-  }
-  if (!fish.position.xCurrentDirection && fish.position.left <= 0) {
-    fish.position.xCurrentDirection = true
-  }
-
-  fish.position.left = fish.position.xCurrentDirection
-    ? (fish.position.left += 10)
-    : (fish.position.left -= 10)
-
-  fishStyle.left = `${fish.position.left}px`
-  fishStyle.transform = fish.position.xCurrentDirection ? 'scaleX(1)' : 'scaleX(-1)'
-}, 50)
 </script>
 
 <template>
   <div class="virtual-aquarium-container">
-    <VFish :style="fishStyle" :fish="fish" />
+    <VFish v-for="fish in fishes" :style="fish.style" :fish="fish" :key="fish.id" />
   </div>
 </template>
 
